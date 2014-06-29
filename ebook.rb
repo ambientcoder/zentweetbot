@@ -53,15 +53,23 @@ end
 unless rand_key == 0 || params["force"]
   puts "Not running this time (key: #{rand_key})"
 else
+
+client = Twitter::REST::Client.new do |config|
+  config.consumer_key = $consumer_key
+  config.consumer_secret = $consumer_secret
+  config.access_token = $access_token
+  config.access_token_secret = $access_token_secret
+end
+
   # Fetch a thousand tweets
   begin
-    user_tweets = Twitter.user_timeline($source_account, :count => 200, :trim_user => true, :include_rts => false)
+    user_tweets = client.user_timeline($source_account, :count => 200, :trim_user => true)
     max_id = user_tweets.last.id
     source_tweets += filtered_tweets(user_tweets)
   
     # Twitter only returns up to 3200 of a user timeline, includes retweets.
     17.times do
-      user_tweets = Twitter.user_timeline($source_account, :count => 200, :trim_user => true, :max_id => max_id - 1, :include_rts => false)
+      user_tweets = client.user_timeline($source_account, :count => 200, :trim_user => true, :max_id => max_id - 1)
       puts "MAX_ID #{max_id} TWEETS: #{user_tweets.length}"
       break if user_tweets.last.nil?
       max_id = user_tweets.last.id
@@ -133,7 +141,8 @@ else
   if params["tweet"]
     if !tweet.nil? && tweet != ''
       puts "TWEET: #{tweet}"
-      Twitter.update(tweet)
+      #Twitter.update(tweet)
+      client.update(tweet)
     else
       raise "ERROR: EMPTY TWEET"
     end

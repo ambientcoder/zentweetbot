@@ -1,3 +1,5 @@
+stack 'ruby-2.1'
+full_remote_build true
 # define the runtime language
 runtime "ruby"
 # exec is the file that will be executed:
