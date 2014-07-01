@@ -13,8 +13,8 @@ source_tweets = []
 $rand_limit ||= 10
 $markov_index ||= 2
 
-puts "random limit: #{rand_limit}"
-puts "markov index: #{markov_index}"
+puts "random limit: #$rand_limit"
+puts "markov index: #$markov_index"
 puts "PARAMS: #{params}" if params.any?
 
 unless params.key?("tweet")
