@@ -4,6 +4,7 @@ require 'rubygems'
 require 'twitter'
 require 'punkt-segmenter'
 require 'twitter_init'
+require 'variables'
 require 'markov'
 require 'htmlentities'
 
@@ -141,7 +142,6 @@ end
   if params["tweet"]
     if !tweet.nil? && tweet != ''
       puts "TWEET: #{tweet}"
-      #Twitter.update(tweet)
       client.update(tweet)
     else
       raise "ERROR: EMPTY TWEET"
