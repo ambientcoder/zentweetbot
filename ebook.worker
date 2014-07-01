@@ -7,7 +7,7 @@ exec "ebook.rb"
 
 file "twitter_init.rb"
 file "markov.rb"
-file "variables"
+file "variables.rb"
 
 gem 'twitter'
 gem 'punkt-segmenter'
