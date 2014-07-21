@@ -23,7 +23,7 @@ end
 
 rand_key = rand($rand_limit)
 
-CLOSING_PUNCTUATION = ['.', ';', ':', '?', '!']
+CLOSING_PUNCTUATION = ['.', ';', ':', '?', '!', ',']
 
 def random_closing_punctuation
   CLOSING_PUNCTUATION[rand(CLOSING_PUNCTUATION.length)]
