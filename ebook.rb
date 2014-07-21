@@ -46,7 +46,7 @@ def filtered_tweets(tweets)
   source_tweets.each do |t| 
     t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
     t.gsub!(/^(@[\d\w_]+\s?)+/, '')
-    t += "." if t !~ /[.?;:!]$/
+#    t += "." if t !~ /[.?;:!]$/
   end
 
   source_tweets
@@ -130,7 +130,7 @@ end
       tweet_letters = next_sentence.gsub(/\P{Word}/, '')
       next if source_tweets.any? {|t| t.gsub(/\P{Word}/, '') =~ /#{tweet_letters}/ }
 
-      tweet += random_closing_punctuation if tweet !~ /[.;:?!]$/
+      tweet += random_closing_punctuation if tweet !~ /[.;:?!\]),'"}\u2026]$/
       tweet += " #{markov.generate_sentence}"
     end
 
