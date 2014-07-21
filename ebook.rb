@@ -46,6 +46,9 @@ def filtered_tweets(tweets)
   source_tweets.each do |t| 
     t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
     t.gsub!(/^(@[\d\w_]+\s?)+/, '')
+    t.gsub!(/[”“]/, '"')
+    t.gsub!(/[‘’]/, "'")
+    t.strip!
 #    t += "." if t !~ /[.?;:!]$/
   end
 
