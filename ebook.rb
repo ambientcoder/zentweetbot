@@ -23,10 +23,16 @@ end
 
 rand_key = rand($rand_limit)
 
-CLOSING_PUNCTUATION = ['.', ';', ':', '?', '!', ',']
+CLOSING_PUNCTUATION = [';', ':', '?', '!', ',']
 
 def random_closing_punctuation
   CLOSING_PUNCTUATION[rand(CLOSING_PUNCTUATION.length)]
+end
+
+HASHTAG = ['#discuss', '#change', '#strategy', '#power', '#politics', '#art' ]
+
+def random_hashtag
+  HASHTAG[rand(HASHTAG.length)]
 end
 
 def filtered_tweets(tweets)
@@ -44,12 +50,11 @@ def filtered_tweets(tweets)
   end
 
   source_tweets.each do |t| 
-    t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
+#    t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
     t.gsub!(/^(@[\d\w_]+\s?)+/, '')
     t.gsub!(/[”“]/, '"')
     t.gsub!(/[‘’]/, "'")
     t.strip!
-#    t += "." if t !~ /[.?;:!]$/
   end
 
   source_tweets
@@ -133,7 +138,7 @@ end
       tweet_letters = next_sentence.gsub(/\P{Word}/, '')
       next if source_tweets.any? {|t| t.gsub(/\P{Word}/, '') =~ /#{tweet_letters}/ }
 
-      tweet += random_closing_punctuation if tweet !~ /[.;:?!\]),'"}\u2026]$/
+      tweet += random_closing_punctuation if tweet !~ /[.;:?!),'"}\]\u2026]$/
       tweet += " #{markov.generate_sentence}"
     end
 
@@ -144,6 +149,8 @@ end
     break if !tweet.nil? && tweet.length < 110
   end
   
+  tweet += " #{random_hashtag}" if rand(3) == 0
+
   if params["tweet"]
     if !tweet.nil? && tweet != ''
       puts "TWEET: #{tweet}"
