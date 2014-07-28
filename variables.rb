@@ -5,5 +5,5 @@ $rand_limit = 6
 $markov_index = 3
 #
 # defaults are false
-#$include_urls = true
+$include_urls = true
 #$include_replies = true

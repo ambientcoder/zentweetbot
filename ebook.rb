@@ -7,6 +7,7 @@ require 'twitter_init'
 require 'variables'
 require 'markov'
 require 'htmlentities'
+require 'uri'
 
 source_tweets = []
 
@@ -23,7 +24,7 @@ end
 
 rand_key = rand($rand_limit)
 
-CLOSING_PUNCTUATION = [';', ':', '?', '!', ',']
+CLOSING_PUNCTUATION = ['.', ';', ':', '?', '!', ',']
 
 def random_closing_punctuation
   CLOSING_PUNCTUATION[rand(CLOSING_PUNCTUATION.length)]
@@ -50,8 +51,6 @@ def filtered_tweets(tweets)
   end
 
   source_tweets.each do |t| 
-#    strip out urls
-#    t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
 #    strip out twitter handles
     t.gsub!(/(@[\d\w_]+\s?)+/, '')
     t.gsub!(/[”“]/, '"')
@@ -151,8 +150,16 @@ end
     break if !tweet.nil? && tweet.length < 110
   end
   
-# add a random hashtag for 1 in 4 tweets and if the tweet is less than 120 chars
-  tweet += " #{random_hashtag}" if rand(3) == 0 && tweet.length < 120
+  tweet += random_closing_punctuation if tweet !~ /[.;:?!),'"}\]\u2026]$/
+
+# format http t co as http://t.co
+  tweet.gsub!(/https?.*t co /, 'http://t.co/')
+
+# remove trailing punctuation if tweet contains URLs
+  tweet.gsub!(/\p{Punct}$/, '') if tweet =~ URI::regexp
+
+# add a random hashtag for 1 in 4 tweets and if the tweet is less than 125 chars
+  tweet += " #{random_hashtag}" if rand(3) == 0 && tweet.length < 125
 
   if params["tweet"]
     if !tweet.nil? && tweet != ''
