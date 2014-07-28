@@ -29,7 +29,7 @@ def random_closing_punctuation
   CLOSING_PUNCTUATION[rand(CLOSING_PUNCTUATION.length)]
 end
 
-HASHTAG = ['#discuss', '#change', '#strategy', '#power', '#politics', '#art' ]
+HASHTAG = ['#discuss', '#change', '#strategy', '#power', '#politics', '#art' , '#repetition', '#conceptual', '#slow', '#zen', '#future', '#oblique']
 
 def random_hashtag
   HASHTAG[rand(HASHTAG.length)]
@@ -50,8 +50,10 @@ def filtered_tweets(tweets)
   end
 
   source_tweets.each do |t| 
+#    strip out urls
 #    t.gsub!(/(\#|(h\/t)|(http))\S+/, '')
-    t.gsub!(/^(@[\d\w_]+\s?)+/, '')
+#    strip out twitter handles
+    t.gsub!(/(@[\d\w_]+\s?)+/, '')
     t.gsub!(/[”“]/, '"')
     t.gsub!(/[‘’]/, "'")
     t.strip!
@@ -149,7 +151,8 @@ end
     break if !tweet.nil? && tweet.length < 110
   end
   
-  tweet += " #{random_hashtag}" if rand(3) == 0
+# add a random hashtag for 1 in 4 tweets and if the tweet is less than 120 chars
+  tweet += " #{random_hashtag}" if rand(3) == 0 && tweet.length < 120
 
   if params["tweet"]
     if !tweet.nil? && tweet != ''
